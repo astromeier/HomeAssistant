@@ -1,0 +1,123 @@
+# configuration.yaml
+# 2018-11-28
+
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret LAT
+  longitude: !secret LON
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret ELE
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: !secret TZone
+  # Customization file
+  customize: !include customize.yaml
+  
+automation: !include automations.yaml
+script: !include scripts.yaml
+group: !include groups.yaml
+sensor: !include sensors.yaml
+binary_sensor: !include binary_sensors.yaml
+input_number: !include input_numbers.yaml
+input_select: !include input_select.yaml
+# input_datetime:
+input_boolean: !include input_boolean.yaml
+switch: !include switches.yaml
+climate: !include climate.yaml
+    
+# Enables the frontend
+frontend:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# updater:
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# preserve adjusted values for next startup
+recorder:
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - samsung_tv
+
+# Track the sun
+sun:
+
+# Show links to resources in log and frontend
+# introduction:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+# conversation:
+
+# Text to speech
+# tts:
+#   - platform: google
+
+# Cloud
+# cloud:
+
+# Menue links #############################################################
+
+# Enables support for tracking state changes over time
+history:
+  include:
+    entities:
+    - sensor.wetterdaten_temperature
+    - sensor.wetterdaten_pressure
+    - sensor.wetterdaten_humidity
+    - sensor.wetterdaten_precip_intensity
+    - sensor.vorlauf_temperature
+    - sensor.ruecklauf_temperature
+    - sensor.hz_stand_ventil
+    - input_number.hz_solltemp
+
+# Enables a map showing the location of tracked devices
+# map:
+
+# View all events in a logbook
+logbook:
+  include:
+    entities:
+    - sun.sun
+    - switch.hzp
+    - switch.wwp
+
+# Enables configuration UI
+config:
+
+panel_iframe:
+  router:
+    title: 'Router'
+    icon: mdi:router-wireless
+    url: !secret RouterURL
+    
+  zaehler:
+    title: 'Zähler'
+    icon: mdi:battery-charging-100
+    url: !secret ZaehlerURL
+
+
+  configurator:
+    title: 'Config-Editor'
+    icon: mdi:wrench
+    url: !secret ConfEditURL
+# END Menue links #########################################################
+
+# Eigene Aenderungen ######################################################
+
+# END Eigene Aenderungen ##################################################
