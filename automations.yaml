@@ -1,5 +1,6 @@
 # Automations
 # automations.yaml
+# 2018-11-28
 
 # Zeitschalter Wochentags HZ ###################################################
   - alias: 'HZ Timer Wochentags ein'

@@ -1,4 +1,5 @@
 # Switches,yaml
+# 2018-11-28
 
 # GPIO steuern #############################################################
 - platform: command_line

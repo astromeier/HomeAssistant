@@ -1,5 +1,6 @@
 # Climate ###################################################################
 # climate.yaml
+# 2018-11-28
 
 - platform: generic_thermostat
   name: HZ plus Thermostat

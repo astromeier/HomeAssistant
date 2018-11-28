@@ -1,10 +1,10 @@
 # configuration.yaml
+2018-11-28
 
 homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   # Location required to calculate the time the sun rises and sets
-  # Koordinaten aus Google Maps: 49.447623, 8.494865
   latitude: !secret LAT
   longitude: !secret LON
   # Impacts weather/sunrise data (altitude above sea level in meters)
