@@ -1,0 +1,36 @@
+# Switches,yaml
+
+# GPIO steuern #############################################################
+- platform: command_line
+  switches:
+    wwp: 
+      friendly_name: 'Umwälzpumpe Warmwasser'
+      command_off: "gpio write 0 0"
+      command_on: "gpio write 0 1"
+      
+    hzp:
+      friendly_name: 'Heizungspumpe'
+      command_off: "gpio write 2 0"
+      command_on: "gpio write 2 1"
+
+    hz_vent_plus:
+      friendly_name: 'Ventil auf'
+      command_off: "gpio write 3 0"
+      command_on: "gpio write 3 1"
+      
+    hz_vent_minus:
+      friendly_name: 'Ventil zu'
+      command_off: "gpio write 12 0"
+      command_on: "gpio write 12 1"
+
+    hz_vent_plus_puls:
+      friendly_name: 'Ventil auf Puls'
+      command_on: "gpio write 3 1 && sleep 1 && gpio write 3 0"
+      command_off: "gpio write 3 0"
+
+    hz_vent_minus_puls:
+      friendly_name: 'Ventil zu Puls'
+      command_on: "gpio write 12 1 && sleep 1 && gpio write 12 0"
+      command_off: "gpio write 12 0"
+# END GPIO steuern  ########################################################
+

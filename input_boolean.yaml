@@ -1,0 +1,13 @@
+# boolean.yaml
+
+enable_zirk_timer:
+  name: "Zirkulation Schaltuhr ein"
+  icon: mdi:clock-start
+
+enable_hz_timer:
+  name: "Heizung Schaltuhr ein"
+  icon: mdi:clock-start
+  
+hz_absenkung:
+  name: "Heizung abgesenkt"
+  icon: mdi:arrow-bottom-right

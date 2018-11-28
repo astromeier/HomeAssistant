@@ -1,0 +1,221 @@
+# groups.yaml
+
+# Views ##########################################################
+  default_view: # Home Page
+    name: HomePage
+    view: yes
+    entities:
+    - group.home
+    - group.system
+    
+  Wetterdaten:
+    view: yes
+    entities:
+    - group.wetter
+    - group.vorhersage
+    
+  Zaehler:
+    view: yes
+    entities:
+    - group.Strom
+    
+  Heizung:
+    name: Heizung
+    view: yes
+    entities:
+    - group.HzTimerWD
+    - group.HzTimerWE
+    - group.heizungssteuerung
+    - group.1wire
+    - group.ventilsteuerung
+    - group.HeizParameter
+
+  Umwaelzpumpe:
+    name: WW Zirkulation
+    view: yes
+    entities:
+    - group.ZirkTimerWD
+    - group.ZirkTimerWE
+    - group.Zirkulation
+    
+  Test:
+    name: Test
+    view: yes
+    entities:
+    - group.ThresTest
+# Views Ende ##########################################################
+  
+# Groups ########################################################    
+  Home:
+    entities:
+    - sun.sun
+    - sensor.date
+    - sensor.time 
+    - sensor.wetterdaten_moon_phase
+    - sensor.wetterdaten_temperature
+    - sensor.wetterdaten_humidity
+    - sensor.wetterdaten_pressure
+    
+  System:
+    entities:
+    - sensor.last_boot
+    - sensor.since_last_boot
+    - sensor.processor_use
+    - sensor.load_1m
+    - sensor.memory_use_percent
+    - sensor.memory_free
+    - sensor.disk_use_percent_
+  
+  Wetter:
+    entities:
+    - sensor.wetterdaten_temperature
+    - sensor.wetterdaten_dew_point
+    - sensor.wetterdaten_humidity
+    - sensor.wetterdaten_pressure
+    - sensor.wetterdaten_cloud_cover
+    - sensor.wetterdaten_wind_speed
+    - sensor.wetterdaten_wind_bearing
+    - sensor.wetterdaten_precip_intensity
+    - sensor.wetterdaten_precip_intensity_max
+    - sensor.wetterdaten_precip_accumulation
+    - sensor.wetterdaten_precip
+    - sensor.wetterdaten_precip_type
+    - sensor.wetterdaten_ozone
+    - sensor.wetterdaten_uv_index
+    - sensor.wetterdaten_moon_phase
+
+  Vorhersage:
+    name: Vorhersage
+    entities:
+    - sensor.wetterdaten_icon
+    - sensor.wetterdaten_temperature_low
+    - sensor.wetterdaten_temperature_high
+    - sensor.wetterdaten_apparent_temperature
+    - sensor.wetterdaten_daytime_high_temperature
+    - sensor.wetterdaten_overnight_low_temperature
+    - sensor.wetterdaten_visibility
+    - sensor.wetterdaten_precip_probability
+    - sensor.wetterdaten_apparent_temperature
+
+#  Staubsensor:
+#    entities:
+#    - sensor.signal
+#    - sensor.pm10
+#    - sensor.pm2_5
+#    - sensor.rel_feuchte
+#    - sensor.temp
+#    - sensor.luftdruck
+
+  1Wire:
+    name: Temperaturen
+    entities:
+    - sensor.vorlauf_temperature
+    - sensor.ruecklauf_temperature
+#    - sensor.sens3_temperature
+    - sensor.wetterdaten_temperature
+
+# Heizungssteuerung  ##############################################
+  Heizungssteuerung:
+    entities:
+    - switch.hzp
+    - binary_sensor.heizungspumpe_ein
+    - input_boolean.enable_hz_timer
+    - binary_sensor.wochentag
+    - climate.hz_plus_thermostat
+    - climate.hz_minus_thermostat
+    - input_select.hzp_on
+    - input_select.hzp_off
+    - input_boolean.hz_absenkung
+    
+  Ventilsteuerung:
+    entities:
+    - switch.hz_vent_plus
+    - switch.hz_vent_plus_puls
+    - switch.hz_vent_minus
+    - switch.hz_vent_minus_puls
+    - sensor.hz_stand_ventil
+    
+  HeizParameter:
+    entities:
+    - input_number.hz_max_temp
+    - input_number.hz_min_vorl
+    - input_number.hz_min_temp
+    - input_number.hz_max_vorl
+    - input_number.hz_absenk
+    - input_number.hz_solltemp
+    - sensor.hz_vorl_temp
+    - input_number.hz_ventil_max
+
+  HzTimerWD:
+    name: "Schaltuhr Arbeitswoche"
+    entities:
+    - input_select.hzp_wd_mo_on
+    - input_select.hzp_wd_mo_off
+    - input_select.hzp_wd_mi_on
+    - input_select.hzp_wd_mi_off
+    - input_select.hzp_wd_ab_on
+    - input_select.hzp_wd_ab_off
+
+  HzTimerWE:
+    name: "Schaltuhr Wochenende"
+    entities:
+    - input_select.hzp_we_mo_on
+    - input_select.hzp_we_mo_off
+    - input_select.hzp_we_mi_on
+    - input_select.hzp_we_mi_off
+    - input_select.hzp_we_ab_on
+    - input_select.hzp_we_ab_off
+# Heizungssteuerung  ##############################################
+
+# Zirkulation Warmwasser  #########################################
+  Zirkulation:
+    entities:
+    - switch.wwp
+    - binary_sensor.umwalzpumpe_warmwasser_ein
+    - binary_sensor.wochentag
+    - sensor.time
+    - input_boolean.enable_zirk_timer  
+    
+  ZirkTimerWD:
+    name: "Schaltuhr Arbeitswoche"
+    entities:
+    - input_select.wwp_wd_mo_on
+    - input_select.wwp_wd_mo_off
+    - input_select.wwp_wd_mi_on
+    - input_select.wwp_wd_mi_off
+    - input_select.wwp_wd_ab_on
+    - input_select.wwp_wd_ab_off
+
+  ZirkTimerWE:
+    name: "Schaltuhr Wochenende"
+    entities:
+    - input_select.wwp_we_mo_on
+    - input_select.wwp_we_mo_off
+    - input_select.wwp_we_mi_on
+    - input_select.wwp_we_mi_off
+    - input_select.wwp_we_ab_on
+    - input_select.wwp_we_ab_off
+# Zirkulation Warmwasser Ende #########################################
+
+#  Strom #########################################################
+  Strom:
+    entities:
+    - sensor.volkszaehler_consumption
+    - sensor.volkszaehler_average
+    - sensor.volkszaehler_max
+    - sensor.volkszaehler_min
+# Strom Ende #########################################################     
+
+#  Test #########################################################
+  ThresTest:
+    entities:
+    - sensor.wetterdaten_temperature
+    - binary_sensor.hz_aussentemp_ein
+    - binary_sensor.threshold
+    - input_number.inp_test
+    - sensor.hz_vorl_temp
+    - input_boolean.hz_absenkung
+# Strom Ende #########################################################     
+
+
+# Groups Ende ########################################################    

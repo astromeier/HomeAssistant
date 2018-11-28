@@ -1,0 +1,35 @@
+# binary_sensors.yaml
+
+- platform: template
+  sensors:
+    threshold:
+      friendly_name: 'Threshold Test'
+      value_template: >-
+        {{(states('sensor.wetterdaten_temperature') | float) > (states('input_number.inp_test') | float)}}
+        
+- platform: template
+  sensors:
+    hz_aussentemp_ein:
+      friendly_name: 'Aussentemp HZ ein'
+      value_template: >-
+        {{(states('sensor.wetterdaten_temperature') | float) < (states('input_number.hz_max_temp') | float)}}
+        
+- platform: workday
+  name: "Wochentag"
+  country: DE
+  province: BW
+  
+- platform: command_line
+  name: "Umwälzpumpe Warmwasser ein?"
+  command: "gpio read 0"
+  payload_on: "1"
+  payload_off: "0"
+  scan_interval: 60
+  
+- platform: command_line
+  name: "Heizungspumpe ein?"
+  command: "gpio read 2"
+  payload_on: "1"
+  payload_off: "0"
+  scan_interval: 60
+  

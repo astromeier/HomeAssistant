@@ -1,0 +1,26 @@
+# Climate ###################################################################
+# climate.yaml
+
+- platform: generic_thermostat
+  name: HZ plus Thermostat
+  heater: switch.hz_vent_plus_puls
+  target_sensor: sensor.vorlauf_temperature
+  ac_mode: False # Ventilantrieb Plus-Seite = heizen
+  target_temp: 45   # cold_tolerance: 1   # hot_tolerance: 1
+  min_cycle_duration:
+    minutes: 2
+  initial_operation_mode: "auto"
+  keep_alive:
+    minutes: 3
+
+- platform: generic_thermostat
+  name: HZ minus Thermostat
+  heater: switch.hz_vent_minus_puls
+  target_sensor: sensor.vorlauf_temperature
+  ac_mode: True # Ventilantrieb Minus-Seite = kühlen
+  target_temp: 45   # cold_tolerance: 1   # hot_tolerance: 1
+  min_cycle_duration:
+    minutes: 2
+  initial_operation_mode: "auto"
+  keep_alive:
+    minutes: 3
