@@ -6,7 +6,7 @@ hz_max_temp:
   mode : box
   min: 10
   max: 20
-  initial: 15
+#  initial: 15
   step: 1
 
 hz_min_temp:
@@ -14,7 +14,7 @@ hz_min_temp:
   mode: box
   min: -30
   max: 0
-  initial: -15
+#  initial: -15
   step: 1
 
 hz_min_vorl:
@@ -22,7 +22,7 @@ hz_min_vorl:
   mode: box
   min: 30
   max: 45
-  initial: 35
+#  initial: 35
   step: 1
   
 hz_max_vorl:
@@ -30,15 +30,15 @@ hz_max_vorl:
   mode: box
   min: 50
   max: 90
-  initial: 80
+#  initial: 80
   step: 1
   
 hz_solltemp:
   name: "Solltemperatur HZ"
   mode: box
-  min: 25
-  max: 95
-  initial: 50
+  min: 0
+  max: 100
+#  initial: 50
   step: 1
   unit_of_measurement: "°C"
 
@@ -47,21 +47,29 @@ hz_absenk:
   mode: box
   min: 40
   max: 100
-  initial: 80
+#  initial: 80
   step: 5
 
 hz_ventil_max:
-  name: "HZ Ventil max"
+  name: "max HZ Ventil"
   mode: box
   min: 50
   max: 800
-  initial: 100
+#  initial: 100
   step: 10
+  
+hz_ventil_min:
+  name: "min HZ Ventil"
+  mode: box
+  min: 10
+  max: 50
+#  initial: 100
+  step: 2
 
 inp_test:
   name: "Test Input"
   mode: box
   min: 0
   max: 25
-  initial: 15
+#  initial: 15
   step: 1

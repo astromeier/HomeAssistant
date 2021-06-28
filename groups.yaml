@@ -52,7 +52,7 @@
     - sun.sun
     - sensor.date
     - sensor.time 
-    - sensor.wetterdaten_moon_phase
+#    - sensor.wetterdaten_moon_phase
     - sensor.wetterdaten_temperature
     - sensor.wetterdaten_humidity
     - sensor.wetterdaten_pressure
@@ -60,12 +60,12 @@
   System:
     entities:
     - sensor.last_boot
-    - sensor.since_last_boot
     - sensor.processor_use
     - sensor.load_1m
     - sensor.memory_use_percent
     - sensor.memory_free
-    - sensor.disk_use_percent_
+    - sensor.disk_use_percent
+#    - sensor.ipv4_address
   
   Wetter:
     entities:
@@ -73,27 +73,27 @@
     - sensor.wetterdaten_dew_point
     - sensor.wetterdaten_humidity
     - sensor.wetterdaten_pressure
-    - sensor.wetterdaten_cloud_cover
+#    - sensor.wetterdaten_cloud_cover
     - sensor.wetterdaten_wind_speed
     - sensor.wetterdaten_wind_bearing
     - sensor.wetterdaten_precip_intensity
-    - sensor.wetterdaten_precip_intensity_max
-    - sensor.wetterdaten_precip_accumulation
-    - sensor.wetterdaten_precip
-    - sensor.wetterdaten_precip_type
+#    - sensor.wetterdaten_precip_intensity_max
+#    - sensor.wetterdaten_precip_accumulation
+#    - sensor.wetterdaten_precip
+#    - sensor.wetterdaten_precip_type
     - sensor.wetterdaten_ozone
     - sensor.wetterdaten_uv_index
-    - sensor.wetterdaten_moon_phase
+#    - sensor.wetterdaten_moon_phase
+    
 
   Vorhersage:
     name: Vorhersage
     entities:
     - sensor.wetterdaten_icon
-    - sensor.wetterdaten_temperature_low
-    - sensor.wetterdaten_temperature_high
-    - sensor.wetterdaten_apparent_temperature
-    - sensor.wetterdaten_daytime_high_temperature
-    - sensor.wetterdaten_overnight_low_temperature
+#    - sensor.wetterdaten_temperature_low
+#    - sensor.wetterdaten_temperature_high
+#    - sensor.wetterdaten_daytime_high_temperature
+#    - sensor.wetterdaten_overnight_low_temperature
     - sensor.wetterdaten_visibility
     - sensor.wetterdaten_precip_probability
     - sensor.wetterdaten_apparent_temperature
@@ -118,15 +118,17 @@
 # Heizungssteuerung  ##############################################
   Heizungssteuerung:
     entities:
-    - switch.hzp
-    - binary_sensor.heizungspumpe_ein
+    - input_boolean.hz_main
     - input_boolean.enable_hz_timer
     - binary_sensor.wochentag
     - climate.hz_plus_thermostat
     - climate.hz_minus_thermostat
+    - input_boolean.hz_absenkung
     - input_select.hzp_on
     - input_select.hzp_off
-    - input_boolean.hz_absenkung
+    - switch.hzp
+    - binary_sensor.heizungspumpe_ein
+    - input_boolean.hz_umw_main
     
   Ventilsteuerung:
     entities:
@@ -146,6 +148,7 @@
     - input_number.hz_solltemp
     - sensor.hz_vorl_temp
     - input_number.hz_ventil_max
+    - input_number.hz_ventil_min
 
   HzTimerWD:
     name: "Schaltuhr Arbeitswoche"

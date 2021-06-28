@@ -27,6 +27,7 @@ input_select: !include input_select.yaml
 input_boolean: !include input_boolean.yaml
 switch: !include switches.yaml
 climate: !include climate.yaml
+system_health:    
     
 # Enables the frontend
 frontend:
@@ -101,10 +102,10 @@ logbook:
 config:
 
 panel_iframe:
-  router:
-    title: 'Router'
-    icon: mdi:router-wireless
-    url: !secret RouterURL
+  pihole:
+    title: 'PiHole'
+    icon: mdi:dns
+    url: !secret PiHoleURL
     
   zaehler:
     title: 'Zähler'

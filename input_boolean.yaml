@@ -12,3 +12,13 @@ enable_hz_timer:
 hz_absenkung:
   name: "Heizung abgesenkt"
   icon: mdi:arrow-bottom-right
+
+hz_umw_main:
+  name: "HZ-Pumpe immer an"
+  icon: mdi:flash-circle
+
+hz_main:
+  name: "Heizung Hauptschalter"
+  icon: mdi:flash-circle
+  
+

@@ -1,35 +1,36 @@
 # SENSORS
 # 2018-11-28
 
+
 # Wetter ######################################################################
 - platform: darksky
   api_key: !secret Dark_Sky
   name: Wetterdaten
   language: de
-  update_interval: '00:10'
+  scan_interval: '00:10'
   monitored_conditions:
     - icon
-    - precip_type
+#    - precip_type
     - precip_intensity
     - precip_probability
-    - precip_accumulation
+#    - precip_accumulation
     - temperature
     - apparent_temperature
     - dew_point
     - wind_speed
     - wind_bearing
-    - cloud_cover
+#    - cloud_cover
     - humidity
     - pressure
     - visibility
     - ozone
     - temperature_high
     - temperature_low
-    - apparent_temperature_high
-    - apparent_temperature_low
-    - precip_intensity_max
+#    - apparent_temperature_high
+#    - apparent_temperature_low
+#    - precip_intensity_max
     - uv_index
-    - moon_phase
+#    - moon_phase
 # Wetter Ende ######################################################################
 
 # Odroid I/O ######################################################################
@@ -48,7 +49,6 @@
 # Odroid I/O Ende ######################################################################     
 
 - platform: time_date
-  friendly_name: "Zeit"
   display_options:
     - 'time'
     - 'date'
@@ -71,7 +71,7 @@
     - type: load_1m
     - type: processor_use
     - type: last_boot
-    - type: since_last_boot
+#    - type: ipv4_address
     
 - platform: template
   sensors:

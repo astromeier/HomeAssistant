@@ -1,12 +1,12 @@
 # Automations
 # automations.yaml
-# 2018-11-28
+# 2021-06-13
 
 # Zeitschalter Wochentags HZ ###################################################
   - alias: 'HZ Timer Wochentags ein'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -31,13 +31,13 @@
         entity_id: input_boolean.hz_absenkung
       - service: logbook.log
         data_template:
-          name: Heizung
+          name: Heizung Zeitschalter WD
           message: normal 
 
   - alias: 'HZ Timer Wochentags aus'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -62,7 +62,7 @@
         entity_id: input_boolean.hz_absenkung
       - service: logbook.log
         data_template:
-          name: Heizung
+          name: Heizung Zeitschalter WD
           message: abgesenkt
 # Zeitschalter Wochentags HZ ENDE ##############################################
 
@@ -70,7 +70,7 @@
   - alias: 'HZ Timer Wochenende ein'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -95,13 +95,13 @@
         entity_id: input_boolean.hz_absenkung
       - service: logbook.log
         data_template:
-          name: Heizung
+          name: Heizung Zeitschalter WE
           message: normal 
           
   - alias: 'HZ Timer Wochenende aus'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -126,7 +126,7 @@
         entity_id: input_boolean.hz_absenkung
       - service: logbook.log
         data_template:
-          name: Heizung
+          name: Heizung Zeitschalter WE
           message: abgesenkt
 # Zeitschalter Wochenende HZ ENDE ##############################################
 
@@ -134,12 +134,17 @@
   - alias: 'HZ Pumpe Timer ein'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
-      - condition: and
+      - condition: or
         conditions:
+        - condition: state
+          entity_id: input_boolean.hz_umw_main
+          state: 'on'
+        - condition: and
+          conditions:
           - condition: state
             entity_id: binary_sensor.hz_aussentemp_ein
             state: 'on'
@@ -148,36 +153,55 @@
     action:
       - service: switch.turn_on
         entity_id: switch.hzp
+#      - service: logbook.log
+#        data_template:
+#          name: HZPumpe Zeitschalter
+#          message: ein
 
   - alias: 'HZ Pumpe Timer aus'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
-      - condition: or
+      - condition: and
         conditions:
-          - condition: template
-            value_template: '{{ states.input_select.hzp_off.state == states.sensor.time.state }}' 
+        - condition: state
+          entity_id: input_boolean.hz_umw_main
+          state: 'off'
+        - condition: template
+          value_template: '{{ states.input_select.hzp_off.state == states.sensor.time.state }}' 
     action:
       - service: switch.turn_off
         entity_id: switch.hzp
+      - service: logbook.log
+        data_template:
+          name: HZPumpe Zeitschalter
+          message: aus
 # Zeitschalter HZ Pumpe ENDE ###################################################
+
 
 # Änderung Solltemperatur HZ ###################################################
   - alias: 'Aenderung HZ Thermostate Solltemperatur'
+    initial_state: true
     trigger:
       platform: state
       entity_id: input_number.hz_solltemp
     action:
       - service: climate.set_temperature
+        entity_id: climate.hz_plus_thermostat
+        data_template:
+          temperature: '{{ states.input_number.hz_solltemp.state }}'
+      - service: climate.set_temperature
+        entity_id: climate.hz_minus_thermostat 
         data_template:
           temperature: '{{ states.input_number.hz_solltemp.state }}'
 # Änderung Solltemperatur HZ ENDE ##############################################
 
 # Änderung Solltemperatur HZ nach Aussentemp normal ############################
   - alias: 'Aenderung HZ Solltemperatur Aussentemp normal'
+    initial_state: true
     trigger:
       - platform: state
         entity_id: sensor.wetterdaten_temperature
@@ -189,6 +213,9 @@
           - condition: state
             entity_id: input_boolean.hz_absenkung
             state: 'off'
+          - condition: state
+            entity_id: input_boolean.hz_main
+            state: 'on'
     action:
       - service: input_number.set_value
         data_template:
@@ -199,6 +226,7 @@
 
 # Änderung Solltemperatur HZ nach Aussentemp abgesenkt #########################
   - alias: 'Aenderung HZ Solltemperatur Aussentemp abgesenkt'
+    initial_state: true
     trigger:
       - platform: state
         entity_id: sensor.wetterdaten_temperature
@@ -210,6 +238,9 @@
           - condition: state
             entity_id: input_boolean.hz_absenkung
             state: 'on'
+          - condition: state
+            entity_id: input_boolean.hz_main
+            state: 'on'
     action:
       - service: input_number.set_value
         data_template:
@@ -220,6 +251,7 @@
 
 # Heizung aktivieren (Aussentemp) ##############################################
   - alias: 'HZ aktivieren'
+    initial_state: true
     trigger:
     - platform: state
       entity_id: binary_sensor.hz_aussentemp_ein
@@ -227,16 +259,15 @@
     action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.enable_hz_timer
-    - service: switch.turn_on
-      entity_id: switch.hzp
     - service: logbook.log
       data_template:
         name: Heizung
-        message: aktiv (Temp.)
+        message: aktiv (AussenTemp.)
 # Heizung aktivieren (Aussentemp) Ende #########################################
 
 # Heizung De-aktivieren (Aussentemp) ###########################################
   - alias: 'HZ de-aktivieren'
+    initial_state: true
     trigger:
     - platform: state
       entity_id: binary_sensor.hz_aussentemp_ein
@@ -249,42 +280,58 @@
     - service: logbook.log
       data_template:
         name: Heizung
-        message: aus (Temp.)
+        message: aus (AussenTemp.)
 # Heizung De-aktivieren (Aussentemp) Ende ######################################
 
-# HZ Regler begrenzen (Ventil) #################################################
+# HZ Regler max begrenzen (Ventil) #################################################
   - alias: HZ Regler begrenzen
+    initial_state: true
     trigger:
     - platform: template
       value_template: '{{ states.sensor.hz_stand_ventil.state | float > states.input_number.hz_ventil_max.state | float}}'
     action:
     - service: climate.turn_off
       entity_id: climate.hz_plus_thermostat
-    - service: logbook.log
-      data_template:
-        name: HZVentil
-        message: begrenzt
 # HZ Regler begrenzen (Ventil) Ende ############################################
       
-# HZ Regler freigeben (Ventil) #################################################
+# HZ Regler max freigeben (Ventil) #################################################
   - alias: HZ Regler freigeben
+    initial_state: true
     trigger:
     - platform: template
       value_template: '{{ states.sensor.hz_stand_ventil.state | float <= states.input_number.hz_ventil_max.state | float}}'
     action:
     - service: climate.turn_on
       entity_id: climate.hz_plus_thermostat
-    - service: logbook.log
-      data_template:
-        name: HZVentil
-        message: frei
+# HZ Regler freigeben (Ventil) Ende ############################################
+
+# HZ Regler min begrenzen (Ventil) #################################################
+  - alias: HZ Regler min begrenzen
+    initial_state: true
+    trigger:
+    - platform: template
+      value_template: '{{ states.sensor.hz_stand_ventil.state | float < states.input_number.hz_ventil_min.state | float}}'
+    action:
+    - service: climate.turn_off
+      entity_id: climate.hz_minus_thermostat
+# HZ Regler begrenzen (Ventil) Ende ############################################
+      
+# HZ Regler min freigeben (Ventil) #################################################
+  - alias: HZ Regler min freigeben
+    initial_state: true
+    trigger:
+    - platform: template
+      value_template: '{{ states.sensor.hz_stand_ventil.state | float >= states.input_number.hz_ventil_min.state | float}}'
+    action:
+    - service: climate.turn_on
+      entity_id: climate.hz_minus_thermostat
 # HZ Regler freigeben (Ventil) Ende ############################################
 
 # Zeitschalter Wochentags Umwälzpumpe ##########################################
   - alias: 'WW Umwaelzpumpe Timer Wochentags ein'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -307,11 +354,15 @@
     action:
       - service: switch.turn_on
         entity_id: switch.wwp
+      - service: logbook.log
+        data_template:
+          name: WWPumpe Timer
+          message: WDein
 
   - alias: 'WW Umwaelzpumpe Timer Wochentags aus'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -334,13 +385,17 @@
     action:
       - service: switch.turn_off
         entity_id: switch.wwp
+      - service: logbook.log
+        data_template:
+          name: WWPumpe Timer
+          message: WDaus
 # Zeitschalter Wochentags Umwälzpumpe ENDE #####################################
 
 # Zeitschalter Wochenende Umwälzpumpe ##########################################
   - alias: 'WW Umwaelzpumpe Timer Wochenende ein'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -363,11 +418,15 @@
     action:
       - service: switch.turn_on
         entity_id: switch.wwp
+      - service: logbook.log
+        data_template:
+          name: WWPumpe Timer
+          message: WEein
 
   - alias: 'WW Umwaelzpumpe Timer Wochenende aus'
     initial_state: true
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: '/1'
         seconds: '0'
     condition:
@@ -390,6 +449,48 @@
     action:
       - service: switch.turn_off
         entity_id: switch.wwp
+      - service: logbook.log
+        data_template:
+          name: WWPumpe Timer
+          message: WEaus
 # Zeitschalter Wochenende Umwälzpumpe ENDE #####################################
 
-
+# Zeitschalter Sommerbetrieb ###################################################
+  - alias: 'HZP Sommerbetrieb ein'
+    initial_state: true
+    trigger:
+      - platform: time_pattern
+        hours: '11'
+        minutes: '55'
+        seconds: '0'
+    condition:
+      - condition: time
+        weekday:
+         - sat
+    action:
+    - service: switch.turn_on
+      entity_id: switch.hzp
+    - service: logbook.log
+      data_template:
+        name: HZP_Sommerbetrieb
+        message: ein
+#
+  - alias: 'HZP Sommerbetrieb aus'
+    initial_state: true
+    trigger:
+      - platform: time_pattern
+        hours: '12'
+        minutes: '15'
+        seconds: '0'
+    condition:
+      - condition: time
+        weekday:
+         - sat
+    action:
+    - service: switch.turn_off
+      entity_id: switch.hzp
+    - service: logbook.log
+      data_template:
+        name: HZP_Sommerbetrieb
+        message: aus
+# Zeitschalter Sommerbetrieb ENDE ##############################################
